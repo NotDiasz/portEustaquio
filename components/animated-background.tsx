@@ -80,28 +80,30 @@ export function AnimatedBackground() {
       }
 
       draw() {
-        ctx.save()
-        ctx.translate(this.x, this.y)
-        ctx.rotate(this.rotation)
-        ctx.globalAlpha = this.opacity
-        ctx.fillStyle = this.color
+        if (ctx) {
+          ctx.save()
+          ctx.translate(this.x, this.y)
+          ctx.rotate(this.rotation)
+          ctx.globalAlpha = this.opacity
+          ctx.fillStyle = this.color
 
-        if (this.type === "square") {
-          ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size)
-        } else if (this.type === "triangle") {
-          ctx.beginPath()
-          ctx.moveTo(0, -this.size / 2)
-          ctx.lineTo(this.size / 2, this.size / 2)
-          ctx.lineTo(-this.size / 2, this.size / 2)
-          ctx.closePath()
-          ctx.fill()
-        } else {
-          ctx.beginPath()
-          ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2)
-          ctx.fill()
+          if (this.type === "square") {
+            ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size)
+          } else if (this.type === "triangle") {
+            ctx.beginPath()
+            ctx.moveTo(0, -this.size / 2)
+            ctx.lineTo(this.size / 2, this.size / 2)
+            ctx.lineTo(-this.size / 2, this.size / 2)
+            ctx.closePath()
+            ctx.fill()
+          } else {
+            ctx.beginPath()
+            ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2)
+            ctx.fill()
+          }
+
+          ctx.restore()
         }
-
-        ctx.restore()
       }
     }
 
@@ -138,18 +140,20 @@ export function AnimatedBackground() {
       }
 
       draw() {
-        if (this.glow) {
-          ctx.shadowBlur = 15
-          ctx.shadowColor = glowColor
-        }
+        if (ctx) {
+          if (this.glow) {
+            ctx.shadowBlur = 15
+            ctx.shadowColor = glowColor
+          }
 
-        ctx.fillStyle = this.color
-        ctx.beginPath()
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-        ctx.fill()
+          ctx.fillStyle = this.color
+          ctx.beginPath()
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+          ctx.fill()
 
-        if (this.glow) {
-          ctx.shadowBlur = 0
+          if (this.glow) {
+            ctx.shadowBlur = 0
+          }
         }
       }
     }
@@ -165,6 +169,8 @@ export function AnimatedBackground() {
 
     // Conectar partículas próximas
     function connect() {
+      if (!ctx) return
+
       const maxDistance = isMobile ? 70 : 100
       for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
@@ -192,7 +198,7 @@ export function AnimatedBackground() {
     }
 
     const handleMouseMove = (event: MouseEvent | TouchEvent) => {
-      if ('touches' in event) {
+      if ("touches" in event) {
         // Touch event
         if (event.touches.length > 0) {
           mouse.x = event.touches[0].clientX
@@ -211,6 +217,8 @@ export function AnimatedBackground() {
 
     // Função de animação
     function animate() {
+      if (!ctx) return
+
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       // Desenhar elementos flutuantes primeiro (atrás das partículas)
