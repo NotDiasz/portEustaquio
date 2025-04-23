@@ -13,9 +13,14 @@ interface TerminalProps {
   autoType?: boolean
 }
 
+interface CommandItem {
+  cmd: string
+  response: string
+}
+
 export function Terminal({ className, initialCommands = [], autoType = true }: TerminalProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [commands, setCommands] = useState<string[]>([])
+  const [commands, setCommands] = useState<CommandItem[]>([])
   const [currentCommand, setCurrentCommand] = useState("")
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
