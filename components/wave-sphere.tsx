@@ -24,7 +24,7 @@ export function WaveSphere() {
 
     // Criar as ondas
     const numberOfWaves = 5
-    const waves = []
+    const waves: HTMLDivElement[] = []
 
     for (let i = 0; i < numberOfWaves; i++) {
       const wave = document.createElement("div")

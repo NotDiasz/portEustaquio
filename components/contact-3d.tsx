@@ -94,11 +94,11 @@ export function Contact3D() {
 
     // Interatividade com o mouse/touch
     let isDragging = false
-    let previousX: number
+    let previousX = 0
 
     const handleStart = (e: MouseEvent | TouchEvent) => {
       isDragging = true
-      if ('touches' in e) {
+      if ("touches" in e) {
         previousX = e.touches[0].clientX
       } else {
         previousX = e.clientX
@@ -108,9 +108,9 @@ export function Contact3D() {
     const handleMove = (e: MouseEvent | TouchEvent) => {
       if (!isDragging) return
 
-      let currentX: number
+      let currentX = 0
 
-      if ('touches' in e) {
+      if ("touches" in e) {
         currentX = e.touches[0].clientX
       } else {
         currentX = e.clientX

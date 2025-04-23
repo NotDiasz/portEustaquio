@@ -36,7 +36,7 @@ export function Cube3D() {
     // Animação de rotação
     let x = 0
     let y = 0
-    let animationId: number
+    let animationId = 0
 
     const animate = () => {
       x += 0.005
@@ -49,12 +49,12 @@ export function Cube3D() {
 
     // Interatividade com o mouse/touch
     let isDragging = false
-    let previousX: number
-    let previousY: number
+    let previousX = 0
+    let previousY = 0
 
     const handleStart = (e: MouseEvent | TouchEvent) => {
       isDragging = true
-      if ('touches' in e) {
+      if ("touches" in e) {
         previousX = e.touches[0].clientX
         previousY = e.touches[0].clientY
       } else {
@@ -67,10 +67,10 @@ export function Cube3D() {
     const handleMove = (e: MouseEvent | TouchEvent) => {
       if (!isDragging) return
 
-      let currentX: number
-      let currentY: number
+      let currentX = 0
+      let currentY = 0
 
-      if ('touches' in e) {
+      if ("touches" in e) {
         currentX = e.touches[0].clientX
         currentY = e.touches[0].clientY
       } else {

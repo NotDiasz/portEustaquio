@@ -81,13 +81,13 @@ export function SkillsGlobe() {
     // Rotação automática
     let rotationX = 0
     let rotationY = 0.5
-    let animationId: number
+    let animationId = 0
     let autoRotate = true
 
     // Interatividade com o mouse
     let isDragging = false
-    let previousX: number
-    let previousY: number
+    let previousX = 0
+    let previousY = 0
 
     const handleMouseDown = (e: MouseEvent) => {
       isDragging = true

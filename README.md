@@ -12,7 +12,6 @@ Meu portfólio pessoal como desenvolvedor Full Stack, com foco em desenvolviment
 
 Este portfólio foi desenvolvido para apresentar meus projetos, habilidades e experiência profissional de forma interativa e visualmente atraente. O design foi inspirado em interfaces de desenvolvimento, com elementos que remetem a terminais, editores de código e referências ao mundo dev.
 
-![Screenshot do Portfólio](./public/screenshot.png)
 
 ## ✨ Características
 
