@@ -61,10 +61,12 @@ export function ParticleBackground() {
       }
 
       draw() {
-        ctx.fillStyle = particleColor
-        ctx.beginPath()
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-        ctx.fill()
+        if (ctx) {
+          ctx.fillStyle = particleColor
+          ctx.beginPath()
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+          ctx.fill()
+        }
       }
     }
 
@@ -75,6 +77,8 @@ export function ParticleBackground() {
 
     // Conectar partículas próximas
     function connect() {
+      if (!ctx) return
+
       const maxDistance = 100
       for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
@@ -96,6 +100,8 @@ export function ParticleBackground() {
 
     // Função de animação
     function animate() {
+      if (!ctx) return
+
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       for (let i = 0; i < particlesArray.length; i++) {
