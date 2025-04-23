@@ -36,7 +36,7 @@ export default function ContatoPage() {
 
                   <div className="flex items-center">
                     <MapPin className="h-5 w-5 text-primary mr-3" />
-                    <span>Brasil</span>
+                    <span>Uberlandia MG,Brasil</span>
                   </div>
                 </div>
 

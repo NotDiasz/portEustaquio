@@ -20,7 +20,7 @@ export default function ProjetosPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatedSection delay={100} animation="fade-up">
             <ProjectCard
-              title="CRUD API"
+              title="API Login , com Criptografia"
               description="API RESTful para gerenciamento de usuários e pessoas, incluindo autenticação e relacionamento entre tabelas. Oferece operações completas de CRUD com segurança e testes."
               tags={["Node.js", "Express", "JWT", "REST API", "Testes"]}
               url="https://github.com/NotDiasz/CRUDApi"
