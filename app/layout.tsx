@@ -6,7 +6,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import { PageTransitions } from "@/components/page-transitions"
-import { Sharingan } from "@/components/sharingan"
+
 import { Terminal } from "@/components/terminal"
 import { FloatingCode } from "@/components/floating-code"
 import { CodeMatrix } from "@/components/code-matrix"
@@ -52,7 +52,7 @@ export default function RootLayout({
               <main className="flex-1">{children}</main>
             </PageTransitions>
             <Footer />
-            <Sharingan />
+            
             <Terminal initialCommands={["echo 'Bem-vindo ao meu portfólio!'", "help"]} />
             <FloatingCode />
           </div>
