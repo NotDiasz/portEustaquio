@@ -9,6 +9,7 @@ import { Cube3D } from "@/components/cube-3d"
 import { AnimatedBackground } from "@/components/animated-background"
 import { AnimatedImage } from "@/components/animated-image"
 import { motion } from "framer-motion"
+import { VisitCounter } from "@/components/visit-counter"
 
 export default function Home() {
   return (
@@ -112,6 +113,15 @@ export default function Home() {
                 <Instagram size={24} />
                 <span className="sr-only">Instagram</span>
               </Link>
+            </motion.div>
+
+            <motion.div
+              className="mt-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 0.5 }}
+            >
+              <VisitCounter />
             </motion.div>
           </AnimatedSection>
 

@@ -1,13 +1,18 @@
+// Substitua o conteúdo do arquivo components/code-matrix.tsx por este:
+
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
 
 export function CodeMatrix() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { theme } = useTheme()
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
+    
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -23,9 +28,9 @@ export function CodeMatrix() {
     resizeCanvas()
     window.addEventListener("resize", resizeCanvas)
 
-    // Caracteres para a matriz (incluindo caracteres de código)
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}[]()<>?/\\|;:,.+-*=&^%$#@!~`"
-    const columns = Math.floor(canvas.width / 20)
+    // Caracteres para a matriz (reduzidos para melhor desempenho)
+    const chars = "01"
+    const columns = Math.floor(canvas.width / 30) // Aumentar o espaçamento
     const drops: number[] = []
 
     // Inicializar posições
@@ -33,48 +38,64 @@ export function CodeMatrix() {
       drops[i] = Math.floor(Math.random() * -canvas.height)
     }
 
-    // Função de desenho
-    const draw = () => {
-      // Fundo semi-transparente para criar o efeito de desvanecimento
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)"
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    // Função de desenho com controle de FPS
+    let lastTime = 0
+    const fps = 15 // Reduzir para 15 FPS
+    const fpsInterval = 1000 / fps
 
-      // Cor do texto
-      ctx.fillStyle = "#0F0" // Verde Matrix
-      ctx.font = "15px monospace"
+    const draw = (timestamp: number) => {
+      if (!ctx) return
+      
+      const elapsed = timestamp - lastTime
+      
+      if (elapsed > fpsInterval) {
+        lastTime = timestamp - (elapsed % fpsInterval)
+        
+        // Fundo semi-transparente para criar o efeito de desvanecimento
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)"
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Desenhar caracteres
-      for (let i = 0; i < drops.length; i++) {
-        // Caractere aleatório
-        const text = chars[Math.floor(Math.random() * chars.length)]
+        // Cor do texto
+        ctx.fillStyle = "#0F0" // Verde Matrix
+        ctx.font = "15px monospace"
 
-        // Posição x é baseada no índice e um espaçamento fixo
-        const x = i * 20
+        // Desenhar caracteres
+        for (let i = 0; i < drops.length; i++) {
+          // Caractere aleatório
+          const text = chars[Math.floor(Math.random() * chars.length)]
 
-        // Posição y é baseada no valor atual da gota
-        const y = drops[i] * 20
+          // Posição x é baseada no índice e um espaçamento fixo
+          const x = i * 30
 
-        // Desenhar o caractere
-        ctx.fillText(text, x, y)
+          // Posição y é baseada no valor atual da gota
+          const y = drops[i] * 20
 
-        // Incrementar a posição y
-        drops[i]++
+          // Desenhar o caractere
+          ctx.fillText(text, x, y)
 
-        // Resetar quando a gota sair da tela ou aleatoriamente
-        if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0
+          // Incrementar a posição y
+          drops[i]++
+
+          // Resetar quando a gota sair da tela ou aleatoriamente
+          if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0
+          }
         }
       }
+      
+      animationId = requestAnimationFrame(draw)
     }
 
     // Iniciar animação
-    const interval = setInterval(draw, 50)
+    let animationId = requestAnimationFrame(draw)
 
     return () => {
-      clearInterval(interval)
+      cancelAnimationFrame(animationId)
       window.removeEventListener("resize", resizeCanvas)
     }
-  }, [theme])
+  }, [theme, isMounted])
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-20 opacity-10" />
+  if (!isMounted) return null
+
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-20 opacity-5" />
 }

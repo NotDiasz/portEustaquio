@@ -1,6 +1,8 @@
+// Substitua o conteúdo do arquivo components/contact-3d.tsx por este:
+
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
 
 interface ContactIcon {
@@ -12,8 +14,11 @@ interface ContactIcon {
 export function Contact3D() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { theme } = useTheme()
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
+    
     if (typeof window === "undefined" || !containerRef.current) return
 
     const container = containerRef.current
@@ -80,19 +85,29 @@ export function Contact3D() {
       sphere.appendChild(element)
     })
 
-    // Rotação com scroll
+    // Rotação com scroll (otimizada)
     let y = 0
+    let lastScrollY = window.scrollY
+    let ticking = false
 
     const handleScroll = () => {
-      // Ajustar a velocidade de rotação com base no scroll
-      y = window.scrollY * 0.01
-      sphere.style.transform = `rotateY(${y}rad)`
+      lastScrollY = window.scrollY
+      
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          y = lastScrollY * 0.01
+          sphere.style.transform = `rotateY(${y}rad)`
+          ticking = false
+        })
+        
+        ticking = true
+      }
     }
 
-    // Adicionar evento de scroll
-    window.addEventListener("scroll", handleScroll)
+    // Adicionar evento de scroll com throttling
+    window.addEventListener("scroll", handleScroll, { passive: true })
 
-    // Interatividade com o mouse/touch
+    // Interatividade com o mouse/touch (otimizada)
     let isDragging = false
     let previousX = 0
 
@@ -128,14 +143,14 @@ export function Contact3D() {
     }
 
     // Mouse events
-    container.addEventListener("mousedown", handleStart)
-    window.addEventListener("mousemove", handleMove)
-    window.addEventListener("mouseup", handleEnd)
+    container.addEventListener("mousedown", handleStart, { passive: true })
+    window.addEventListener("mousemove", handleMove, { passive: true })
+    window.addEventListener("mouseup", handleEnd, { passive: true })
 
     // Touch events
-    container.addEventListener("touchstart", handleStart)
-    window.addEventListener("touchmove", handleMove)
-    window.addEventListener("touchend", handleEnd)
+    container.addEventListener("touchstart", handleStart, { passive: true })
+    window.addEventListener("touchmove", handleMove, { passive: true })
+    window.addEventListener("touchend", handleEnd, { passive: true })
 
     // Limpar event listeners
     return () => {
@@ -147,7 +162,9 @@ export function Contact3D() {
       window.removeEventListener("touchmove", handleMove)
       window.removeEventListener("touchend", handleEnd)
     }
-  }, [theme])
+  }, [theme, isMounted])
+
+  if (!isMounted) return null
 
   return (
     <div className="w-full h-[300px] perspective-800 cursor-grab active:cursor-grabbing">

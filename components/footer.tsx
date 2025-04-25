@@ -1,5 +1,6 @@
 import { Github, Instagram, Linkedin } from "lucide-react"
 import Link from "next/link"
+import { VisitCounter } from "./visit-counter"
 
 export function Footer() {
   return (
@@ -10,6 +11,9 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} Miguel Eustáquio. Todos os direitos reservados.
             </p>
+            <div className="mt-2">
+              <VisitCounter />
+            </div>
           </div>
 
           <div className="flex space-x-4">
